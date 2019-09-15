@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title> Kaprekar’s Constant </title>
+<style>
+    /****** box ******/
+	body{
+	font-family: 'Catamaran', 'Helvetica', 'Arial', 'sans-serif';
+	font-weight: 200;
+	letter-spacing: 1px;
+    background-color: lightgray;
+	}
+	h4{
+	    color:#007aff; 
+	}
+    .alert {
+        padding: 15px;
+        margin-bottom: 20px;
+        border: 1px solid transparent;
+        background-color:#bedcfc; 
+        color: #007aff;
+    }
+    strong{
+        color: black; 
+    }
+    .is-invalid{
+        border:1px solid #ff2d55 !important;
+    }
+    .wrong{
+        color: #ff2d55 !important;
+        font-size: 14px;
+    }
+    .box-container{
+        padding: 30px;
+        max-width: 350px;
+        width: 100% !important;
+        background-color: #e6e6e6;
+        margin: 100px auto;
+        border-radius: 2px;
+        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+        font-family: roboto;
+    }
+    .box-container div{
+        font-weight:bold; 
+        text-align:center;
+    }
+    .box-container div:last-child{
+        margin-top:8%;
+    }
+    .box-container p:last-child{
+        margin-top:8%;
+        border-radius: 2px;
+        text-align: justify;
+    }
+    .box-container h1 {
+        text-align: center;
+        font-size: 1.8em;
+        font-family: roboto;
+    }
+	
+    .box-container input[type=submit],input[type=number] {
+        width: 100%;
+        display: block;
+        margin-bottom: 10px;
+        position: relative;
+    }
+    .box-container input[type=text],input[type=number]  {
+        height: 44px;
+        font-size: 16px;
+        width: 100%;
+        margin-bottom: 10px;
+        -webkit-appearance: none;
+        background: #fff;
+        border: 1px solid #d9d9d9;
+        border-top: 1px solid #c0c0c0;
+        /* border-radius: 2px; */
+        padding: 0 8px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+    }
+    .box-container input[type=text]:hover,input[type=number]:hover  {
+        border: 1px solid #b9b9b9;
+        border-top: 1px solid #a0a0a0;
+        -moz-box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+        -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+        box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+    }
+    .box-submit {
+        border: 1px solid #007aff; 
+        border: 0px;
+        color: #fff;
+        text-shadow: 0 1px rgba(0,0,0,0.1);
+        background-color: #007aff;
+        padding: 17px 0px;
+        font-family: roboto;
+        font-size: 14px;
+    
+    }
+    .box-submit:hover {
+        border: 1px solid #007aff; 
+        border: 0px;
+        text-shadow: 0 1px rgba(0,0,0,0.3);
+        background-color: #1a0dab;
+    }
+    .box-container a {
+        text-decoration: none;
+        color: #666;
+        font-weight: 400;
+        text-align: center;
+        display: inline-block;
+        opacity: 0.6;
+        transition: opacity ease 0.5s;
+    }
+    .box-help{
+        font-size: 12px;
+    }
+</style>
+</head>
+<body>
+       
+        <div class="box-container">
+            <h1>Kaprekar’s Constant</h1><br>
+			<div id="result"></div>
+                <label for="number" for="nmber">Number</label>
+                <input type="number" id="number" name="number" placeholder='four-digit integer number ' required="required" />
+                <p id="errorText" class="wrong"></p>
+            <div>
+                <input type="submit" class="box box-submit" id="submit" name="submit" value="Play"/>
+			</div>
+                <p> 
+                    Kaprekar’s Constant:Take any four-digit number (whose digits are not all identical).<br>
+                    The most amazing thing is this: Every four-digit number whose digits are not, all the
+                    same, will eventually hit 6174, in at most 7 steps, and then stay there!
+                </p>
+        </div>
+
+</body>
+<script>
+const kraprekarsNumber= (n)=>{
+    const kraprekars = 6174;
+    let diff = n;
+    let counter = 0;
+    let op = '';
+    let tab=[];
+    while (diff !== kraprekars) {
+        diff = diff.toString();
+        let numArray = (diff).split("");
+        //Sort the array into descending order
+        let descArray = numArray.sort((a,b)=>{
+            return b - a;
+        });
+        //Sort the array into ascending order
+        //Slice creates a copy of the array so as to not alter the descending one
+        let ascArray = numArray.slice().reverse();
+        let descInt = parseInt(descArray.join(''));
+        let ascInt  = parseInt(ascArray.join(''));
+        //calculate the difference between the numbers
+        diff = descInt - ascInt;
+        op +=`${descInt}-${ascInt}=${diff} <br>`;
+        //Increment the counter
+        counter++;
+  }
+  tab=[counter, op];
+  return tab; 
+}
+const element = document.querySelector('#submit');
+const field = document.querySelector('#number');
+const errorText = document.querySelector('#errorText');
+console.log(number);
+//remove the errors styles
+number.addEventListener('keyup',()=>{
+    errorText.textContent='';
+    field.classList.remove("is-invalid");
+});
+//check for the input number to perform the operation.
+element.addEventListener('click',()=>{
+	const  n = field.value;
+    //verify if the input number is 4 digits integers
+	if(!(/^\d{4}$/.test(n))){
+        field.classList.add("is-invalid");
+        errorText.classList.add(".wrong");
+        errorText.textContent = 'Provide only four-digit integer number ';
+        return;
+	}
+    //verify if the input number is 4 digits integers whose digits are not all identical
+    if(!((n[0]!==n[1])&&(n[1]!==n[2])&&(n[2]!==n[3]))){
+        field.classList.add("is-invalid");
+        errorText.classList.add(".wrong");
+        errorText.textContent = 'Provide only four-digit integer number (whose digits are not all identical) ';
+        return;
+    }
+	let result=n;
+    //to evaluate the number of step before get to the constant
+	result=kraprekarsNumber(result);
+    //display the result
+	document.querySelector("#result").innerHTML=`${result[1]}<br><h4 class="alert"> ${n} takes <strong> ${result[0]}</strong> steps to get to the constant 6174</h4>`;
+});
+</script>
+
+
+</html>
