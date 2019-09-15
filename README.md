@@ -1,4 +1,4 @@
-# First Project: LOGS ANALYSIS
+# Krapekar constant
 
 ## Table of Contents
 
